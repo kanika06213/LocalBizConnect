@@ -40,4 +40,15 @@ Users can browse categories, explore local shops, view products/services, and pl
 ## Installation
 
 Clone the repository:
+```
 https://github.com/kanika06213/LocalBizConnect.git
+```
+
+Install dependencies and start the development server:
+```
+cd LocalBizConnect
+npm install
+npm start
+```
+
+The application will open in your browser at `http://localhost:3000`
