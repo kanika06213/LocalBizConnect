@@ -1,0 +1,75 @@
+.vendor-container{
+  padding:40px;
+  text-align:center;
+}
+
+.vendor-grid{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:30px;
+  margin-top:40px;
+}
+
+.vendor-card{
+  background:#f5f5f5;
+  padding:40px;
+  border-radius:10px;
+  text-decoration:none;
+  color:black;
+  transition:0.2s;
+}
+
+.vendor-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 6px 14px rgba(0,0,0,0.1);
+}
+.vendor-form{
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  width:300px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.vendor-form input{
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+.vendor-form button{
+  padding:10px;
+  background:#2e7d32;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.manage-products{
+  margin-top:40px;
+  max-width:600px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.product-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#f5f5f5;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:15px;
+}
+
+.delete-btn{
+  background:#e53935;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:5px;
+  cursor:pointer;
+}

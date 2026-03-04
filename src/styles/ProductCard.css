@@ -1,0 +1,32 @@
+.product-card{
+  background:white;
+  border:1px solid #eee;
+  border-radius:12px;
+  padding:20px;
+  text-align:center;
+  transition:0.25s;
+}
+
+.product-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 6px 16px rgba(0,0,0,0.12);
+}
+
+.product-price{
+  color:var(--primary);
+  font-weight:bold;
+}
+
+.add-btn{
+  background:#2e7d32;
+  color:white;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.add-btn:hover{
+  background:#1b5e20;
+}
