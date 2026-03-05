@@ -71,6 +71,15 @@ app.delete("/orders", (req, res) => {
     res.send("All orders deleted");
   });
 });
+app.get("/stream-orders", (req, res) => {
+  const stream = fs.createReadStream("orders.json", "utf8");
+
+  stream.on("error", (err) => {
+    res.status(500).send("Error streaming file");
+  });
+
+  stream.pipe(res);
+});
 
 // Start server
 app.listen(PORT, () => {
