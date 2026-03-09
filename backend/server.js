@@ -1,105 +1,36 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 
-const app = express();
-const PORT = 5000;
+const logger = require("./middleware/logger");
+const ordersRouter = require("./routes/ordersRoutes");
 
-const ordersFile = path.join(__dirname, "orders.json");
-const ordersTextFile = path.join(__dirname, "orders.txt");
+const app = express();
+const PORT = process.env.PORT || 5000;
 
 /* ------------------ MIDDLEWARE ------------------ */
 
-app.use(cors());
-
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  })
+);
 
 app.use(express.json());
+app.use(logger);
 
-
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
-
-// Serve static files
-app.use(express.static("public"));
+// Serve static files from backend/public (optional)
+app.use(express.static(path.join(__dirname, "public")));
 
 /* ------------------ ROUTES / ENDPOINTS ------------------ */
 
-// Home route
+// Health check
 app.get("/", (req, res) => {
   res.send("LocalBizConnect Backend Running");
 });
 
-
-app.get("/orders", (req, res) => {
-  fs.readFile(ordersFile, "utf8", (err, data) => {
-    if (err) {
-      return res.status(500).send("Error reading orders");
-    }
-
-    res.json(JSON.parse(data));
-  });
-});
-
-/* ----------- CREATE NEW ORDER ----------- */
-app.post("/orders", (req, res) => {
-  const newOrder = req.body;
-
-  fs.readFile(ordersFile, "utf8", (err, data) => {
-    let orders = [];
-
-    if (!err && data) {
-      orders = JSON.parse(data);
-    }
-
-    orders.push(newOrder);
-
-    fs.writeFile(ordersFile, JSON.stringify(orders, null, 2), (err) => {
-      if (err) {
-        return res.status(500).send("Error saving order");
-      }
-
-      res.send("Order saved successfully");
-    });
-  });
-});
-
-/* ----------- APPEND ORDER (TEXT FILE) ----------- */
-app.post("/append-order", (req, res) => {
-  const order = JSON.stringify(req.body) + "\n";
-
-  fs.appendFile(ordersTextFile, order, (err) => {
-    if (err) {
-      return res.status(500).send("Error appending order");
-    }
-
-    res.send("Order appended successfully");
-  });
-});
-
-/* ----------- DELETE ALL ORDERS ----------- */
-app.delete("/orders", (req, res) => {
-  fs.writeFile(ordersFile, "[]", (err) => {
-    if (err) {
-      return res.status(500).send("Error deleting orders");
-    }
-
-    res.send("All orders deleted");
-  });
-});
-
-/* ----------- FILE STREAMING ----------- */
-app.get("/stream-orders", (req, res) => {
-  const stream = fs.createReadStream(ordersFile, "utf8");
-
-  stream.on("error", () => {
-    res.status(500).send("Error streaming file");
-  });
-
-  stream.pipe(res);
-});
+// Mount orders router at /api
+app.use("/api", ordersRouter);
 
 /* ------------------ SERVER START ------------------ */
 

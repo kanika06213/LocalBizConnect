@@ -1,7 +1,6 @@
 import "./../styles/Cart.css";
 
-function Cart({ cart, setCart }) {
-
+function Cart({ cart, setCart, user }) {
   function handleRemove(indexToRemove) {
     const updatedCart = cart.filter((_, index) => index !== indexToRemove);
     setCart(updatedCart);
@@ -13,7 +12,11 @@ function Cart({ cart, setCart }) {
     <div className="cart-container">
       <h1>Your Cart</h1>
 
-      {cart.length === 0 ? (
+      {!user ? (
+        <p className="empty-cart">
+          Please <a href="/login">login</a> to manage your cart.
+        </p>
+      ) : cart.length === 0 ? (
         <p className="empty-cart">Your cart is empty.</p>
       ) : (
         <>

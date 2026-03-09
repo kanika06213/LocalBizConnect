@@ -1,9 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import "./../styles/ShopProducts.css";
 
-function ShopProducts({cart, setCart}) {
+function ShopProducts({ cart, setCart, user }) {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const shopProductsData = {
     101: [
@@ -160,16 +161,28 @@ function ShopProducts({cart, setCart}) {
   };
 
   const products = shopProductsData[id] || [];
+
   function handleAddToCart(product) {
-  const updatedCart = [...cart, product];
-  setCart(updatedCart);
-}
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    const updatedCart = [...cart, product];
+    setCart(updatedCart);
+  }
 
   return (
-  <div className="products-container">
-    <h1 className="products-title">Products of Shop {id}</h1>
+    <div className="products-container">
+      <h1 className="products-title">Products of Shop {id}</h1>
 
-    {products.length === 0 ? (
+      {!user && (
+        <p className="info-text">
+          Please <a href="/login">log in</a> to add items to your cart.
+        </p>
+      )}
+
+      {products.length === 0 ? (
       <p>No products available.</p>
     ) : (
       <div className="products-grid">
