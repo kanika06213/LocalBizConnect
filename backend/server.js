@@ -24,12 +24,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 /* ------------------ ROUTES / ENDPOINTS ------------------ */
 
-// Health check
 app.get("/", (req, res) => {
-  res.send("LocalBizConnect Backend Running");
+  res.send("Server Running");
 });
 
-// Mount orders router at /api
 app.use("/api", ordersRouter);
 
 /* ------------------ SERVER START ------------------ */
