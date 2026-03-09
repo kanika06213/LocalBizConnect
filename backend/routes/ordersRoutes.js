@@ -60,6 +60,29 @@ router.delete("/orders/:id", (req, res) => {
   });
 });
 
+const ordersTextFile = path.join(__dirname, "..", "orders.txt");
+
+router.post("/append-order", (req, res) => {
+  const order = JSON.stringify(req.body) + "\n";
+
+  fs.appendFile(ordersTextFile, order, (err) => {
+    if (err) return res.status(500).send("Error appending order");
+
+    res.send("Order appended successfully");
+  });
+});
+
+router.get("/stream-orders", (req, res) => {
+  const stream = fs.createReadStream(ordersFile, "utf8");
+
+  stream.on("error", () => {
+    res.status(500).send("Error streaming file");
+  });
+
+  res.setHeader("Content-Type", "application/json");
+  stream.pipe(res);
+});
+
 router.delete("/orders", (req, res) => {
   fs.writeFile(ordersFile, "[]", (err) => {
     if (err) return res.status(500).send("Error deleting orders");
